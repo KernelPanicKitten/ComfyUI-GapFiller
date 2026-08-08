@@ -2,11 +2,11 @@
 """GapFiller standalone - use it without ComfyUI.
 
 Command line:
-    gapfiller in.mp4 out.mp4 --fps 60
-    gapfiller in.mp4 out.mp4 --multiplier 4 --sharpness 1.1
+    python standalone.py in.mp4 out.mp4 --fps 60
+    python standalone.py in.mp4 out.mp4 --multiplier 4 --sharpness 1.1
 
 Drag-and-drop web UI (needs `pip install gradio`):
-    gapfiller-ui
+    python standalone.py --ui
 
 Only ffmpeg and PyTorch are required for the CLI.
 """
@@ -136,10 +136,15 @@ def interpolate_video(inp, outp, target_fps=None, multiplier=None, ckpt=None,
 
 
 def main():
+    # Running this file directly is the install-free path, so --ui has to be
+    # reachable here too, not only through the console script.
+    if "--ui" in sys.argv[1:]:
+        return ui()
     ap = argparse.ArgumentParser(prog="gapfiller",
                                  description="Fills the gaps between your frames.")
     ap.add_argument("input")
     ap.add_argument("output")
+    ap.add_argument("--ui", action="store_true", help="launch the drag-and-drop web UI instead")
     g = ap.add_mutually_exclusive_group()
     g.add_argument("--fps", type=float, help="retime to this frame rate (e.g. 60)")
     g.add_argument("--multiplier", type=int, help="multiply frame count (e.g. 2, 4)")
