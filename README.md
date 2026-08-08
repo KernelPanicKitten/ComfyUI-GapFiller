@@ -90,21 +90,28 @@ quality advantage.
 
 ## Installation
 
+Search for **GapFiller** in ComfyUI Manager and install it, or from the command
+line:
+
+```bash
+comfy node install comfyui-gapfiller
+```
+
+To install from source instead:
+
 ```bash
 cd ComfyUI/custom_nodes
 git clone https://github.com/KernelPanicKitten/ComfyUI-GapFiller
 ```
 
-Then restart ComfyUI. The nodes appear under the **GapFiller** category.
+Either way, restart ComfyUI afterwards. The nodes appear under the **GapFiller**
+category.
 
 Weights (96 MB) download automatically the first time a node runs, into
 `ComfyUI/models/gapfiller/`. To place them by hand instead, download
 `gapfiller_v1.pt` from the
 [releases page](https://github.com/KernelPanicKitten/ComfyUI-GapFiller/releases)
 into that directory.
-
-*Not yet listed in ComfyUI Manager. Once it is published to the ComfyUI registry
-you will be able to install it from there instead.*
 
 ## Example workflows
 
