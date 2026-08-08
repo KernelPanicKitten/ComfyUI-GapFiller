@@ -27,7 +27,7 @@ from .gapfiller_model import GapFillerNet
 
 DEFAULT_CKPT = "gapfiller_v1.pt"
 WEIGHT_URLS = [
-    "https://huggingface.co/KernelPanicKitten/GapFiller/resolve/main/gapfiller_v1.pt",
+    "https://github.com/KernelPanicKitten/ComfyUI-GapFiller/releases/download/v0.1.0/gapfiller_v1.pt",
 ]
 
 CFG = {

@@ -30,7 +30,7 @@ CFG = {
     "bigger": ((192, 144, 96), (10, 8, 6)),
     "large": ((256, 192, 128), (12, 10, 8)),
 }
-WEIGHT_URLS = ["https://huggingface.co/KernelPanicKitten/GapFiller/resolve/main/gapfiller_v1.pt"]
+WEIGHT_URLS = ["https://github.com/KernelPanicKitten/ComfyUI-GapFiller/releases/download/v0.1.0/gapfiller_v1.pt"]
 
 
 def default_ckpt_dir():
