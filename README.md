@@ -9,11 +9,15 @@ Fills the gaps between your frames.
 Frame interpolation for ComfyUI with **arbitrary-time conditioning** and direct
 retiming to any target frame rate.
 
-Most interpolators only synthesise the *midpoint* between two frames. Converting
-24 fps to 60 fps is a 2.5x ratio, so a midpoint-only model has to over-generate
-(24 -> 96 fps) and then throw frames away, landing output frames off the intended
-timeline. GapFiller is conditioned on the interpolation time `t`, so it renders
-each output frame at exactly the moment the target rate needs.
+Converting 24 fps to 60 fps is a 2.5x ratio. Modern RIFE can reach it by
+generating 5x (120 fps) and discarding every other frame, which works but spends
+twice the compute needed and, in ComfyUI, means running an integer multiplier and
+then dropping frames yourself. Older midpoint-only interpolators cannot hit 2.5x
+at all and land output frames off the intended timeline, which reads as judder.
+
+GapFiller is conditioned on the interpolation time `t`, so it renders each output
+frame at exactly the moment the target rate needs: no over-generation, no discard
+pass, and one node instead of a workflow.
 
 ## Features
 
