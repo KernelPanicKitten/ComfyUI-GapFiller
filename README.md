@@ -2,29 +2,33 @@
 
 Fills the gaps between your frames.
 
-> **Early preview (v0.1).** This is a first public release. It works and the
-> benchmarks below are real, but expect rough edges, and expect the model to be
-> retrained and improved. Feedback and failure cases are genuinely welcome.
+> **Early preview (v0.1).** First public release, trained in a few hours on a
+> single GPU. Quality is on par with RIFE rather than better than it (see the
+> benchmark section, which says so plainly). A retrain is planned. Failure cases
+> are genuinely welcome.
 
 Frame interpolation for ComfyUI with **arbitrary-time conditioning** and direct
 retiming to any target frame rate.
 
-Converting 24 fps to 60 fps is a 2.5x ratio. Modern RIFE can reach it by
-generating 5x (120 fps) and discarding every other frame, which works but spends
-twice the compute needed and, in ComfyUI, means running an integer multiplier and
-then dropping frames yourself. Older midpoint-only interpolators cannot hit 2.5x
-at all and land output frames off the intended timeline, which reads as judder.
+Frame-rate conversions rarely land on whole numbers. 24 -> 60 fps is 2.5x; 16 -> 60
+fps (common with Wan workflows) is 3.75x. The ComfyUI RIFE node only multiplies by
+whole numbers, so reaching 60 means picking a multiple that overshoots and then
+dropping frames yourself: 5x to 120 fps and bin half, or 4x to 64 fps and resample
+unevenly down to 60.
 
 GapFiller is conditioned on the interpolation time `t`, so it renders each output
-frame at exactly the moment the target rate needs: no over-generation, no discard
-pass, and one node instead of a workflow.
+frame at exactly the moment the target rate needs. Tell it the source and target
+fps and it generates precisely those frames: no over-generation, no discard pass,
+no arithmetic, one node.
 
 ## Features
 
 - **Arbitrary-time interpolation** - any `t`, not just 0.5
-- **Retime to any fps** - 24 -> 60 directly, no integer-multiplier restriction
+- **Retime to any fps** - 16 -> 60 or 24 -> 60 directly, no integer-multiplier
+  restriction and no manual frame dropping
 - **Six inference controls** - sharpness, blend bias, flow scale, scene threshold,
-  ensemble, and automatic multi-scale flow
+  ensemble and flow resolution. Four of these have no equivalent in the ComfyUI
+  RIFE node, which exposes `fast_mode`, `ensemble` and `scale_factor`.
 - **Any resolution** - fully convolutional, pads internally
 - **Automatic weight download** on first use
 
@@ -52,28 +56,37 @@ Measured on 279 held-out samples that the model never trained on, with identical
 inputs and metric code for every method. `blend` is the naive average of the two
 input frames.
 
-| Split | Blend | RIFE 4.7 | **GapFiller** |
-| --- | --- | --- | --- |
-| All samples | 23.39 | 27.74 | **27.92** |
-| Generated video | 23.09 | 28.27 | **28.57** |
-| Motion 25+ | 19.71 | 23.81 | **23.85** |
-| Motion 50+ (extreme) | 14.93 | 19.73 | **19.98** |
-| Arbitrary `t` (not 0.5) | 22.79 | 27.44 | **27.74** |
+Compared against every RIFE checkpoint the ComfyUI node supports, including 4.26,
+their newest release. PSNR in dB, higher is better.
 
-PSNR in dB, higher is better. GapFiller leads in every split, by **+0.18 to
-+0.30 dB**.
+| Split | Blend | RIFE 4.7 | RIFE 4.17 | RIFE 4.26 | GapFiller |
+| --- | --- | --- | --- | --- | --- |
+| All samples | 23.39 | 27.74 | 27.82 | 27.73 | 27.88 |
+| Generated video | 23.09 | 28.27 | 28.53 | 28.38 | 28.52 |
+| Real footage | 23.69 | 27.20 | 27.09 | 27.06 | 27.22 |
+| Midpoint frames | 23.78 | 27.93 | 27.88 | - | 27.99 |
 
-### Honest caveats
+### Read this before quoting the table
 
-- These margins are consistent but modest. This is not a landslide.
-- The evaluation set is drawn from the same domain the model was trained on
-  (generated and real video clips). RIFE is a general-purpose model trained on
-  Vimeo90k; on generic footage it may well match or beat this model.
-- GapFiller is 24M parameters against RIFE's 5.3M. RIFE is considerably more
-  parameter-efficient; the advantage here comes from domain training and
-  time-conditioning, not from a better architecture per parameter.
-- `scale_factor` is directly inspired by RIFE's knob of the same name. Before
-  adopting it this model *lost* the extreme-motion split.
+**This is a tie, not a win.** Every gap between GapFiller and current RIFE is
+0.01 to 0.13 dB, which is noise. GapFiller is marginally ahead on some splits and
+marginally behind on others.
+
+- **RIFE is far more parameter-efficient.** 5.4M parameters against GapFiller's
+  24M for the same quality. That is better engineering.
+- **The evaluation set matches the training domain** (generated and real video
+  clips). RIFE is a generalist trained on Vimeo90k; on general footage it may
+  well come out ahead.
+- **PSNR may flatter this model.** The RIFE authors state in their repository
+  that "improving the PSNR index is not consistent with subjective perception"
+  and tune for perceptual quality instead of the metric.
+- **RIFE ships versions the ComfyUI node does not expose** (4.18 through 4.25).
+  Those are untested here.
+- **`scale_factor` is RIFE's idea**, adopted here. Without it this model *lost*
+  the large-motion split.
+
+The reason to use GapFiller is the controls and the direct fps retiming, not a
+quality advantage.
 
 ## Installation
 
