@@ -90,22 +90,16 @@ quality advantage.
 
 ## Installation
 
-Search for **GapFiller** in ComfyUI Manager and install it, or from the command
-line:
-
-```bash
-comfy node install comfyui-gapfiller
-```
-
-To install from source instead:
-
 ```bash
 cd ComfyUI/custom_nodes
 git clone https://github.com/KernelPanicKitten/ComfyUI-GapFiller
 ```
 
-Either way, restart ComfyUI afterwards. The nodes appear under the **GapFiller**
-category.
+Restart ComfyUI afterwards. The nodes appear under the **GapFiller** category.
+
+GapFiller is also published to the ComfyUI registry as `comfyui-gapfiller`. Once
+its listing clears the automated security scan it can be installed by searching
+**GapFiller** in ComfyUI Manager, or with `comfy node install comfyui-gapfiller`.
 
 Weights (96 MB) download automatically the first time a node runs, into
 `ComfyUI/models/gapfiller/`. To place them by hand instead, download
@@ -127,30 +121,35 @@ to load and save video.
 
 ## Without ComfyUI
 
-GapFiller also runs standalone.
+GapFiller also runs standalone. Clone the repo and run the script directly:
 
 ```bash
-pip install comfyui-gapfiller
+git clone https://github.com/KernelPanicKitten/ComfyUI-GapFiller
+cd ComfyUI-GapFiller
 
 # retime to 60 fps
-gapfiller input.mp4 output.mp4 --fps 60
+python standalone.py input.mp4 output.mp4 --fps 60
 
 # or just double the frames
-gapfiller input.mp4 output.mp4 --multiplier 2
+python standalone.py input.mp4 output.mp4 --multiplier 2
 ```
 
-Drag-and-drop web UI:
+Drag-and-drop web UI, which additionally needs gradio:
 
 ```bash
-pip install "comfyui-gapfiller[ui]"
-gapfiller-ui
+pip install gradio
+python standalone.py --ui
 ```
 
 Weights download on first run to `~/.cache/gapfiller/`. ffmpeg must be on PATH.
 
 ## Requirements
 
-PyTorch 2.0 or newer. No other dependencies beyond what ComfyUI already ships.
+Inside ComfyUI: PyTorch 2.0 or newer, and nothing else beyond what ComfyUI
+already ships.
+
+Standalone additionally needs `numpy` and `ffmpeg` on PATH, plus `gradio` for the
+web UI.
 
 ## Model
 
