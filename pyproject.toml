@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-gapfiller"
 description = "Fills the gaps between your frames. Frame interpolation with arbitrary-time conditioning and retiming to any fps."
-version = "1.0.0"
+version = "0.1.0"
 license = { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.9"

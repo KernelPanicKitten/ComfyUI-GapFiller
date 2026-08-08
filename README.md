@@ -2,6 +2,10 @@
 
 Fills the gaps between your frames.
 
+> **Early preview (v0.1).** This is a first public release. It works and the
+> benchmarks below are real, but expect rough edges, and expect the model to be
+> retrained and improved. Feedback and failure cases are genuinely welcome.
+
 Frame interpolation for ComfyUI with **arbitrary-time conditioning** and direct
 retiming to any target frame rate.
 
