@@ -1,18 +1,20 @@
 [project]
 name = "comfyui-gapfiller"
-description = "Fills the gaps between your frames. Frame interpolation with arbitrary-time conditioning and retiming to any fps."
-version = "0.1.0"
+# Manager searches title and description, so the description has to contain the
+# words people actually type: interpolation, RIFE, slow motion, fps, video.
+description = "Video frame interpolation (VFI). Retime any clip to any frame rate, turn 16 or 24 fps into smooth 60 fps, or stretch it into slow motion. A RIFE alternative with arbitrary-time conditioning and six inference controls."
+version = "0.1.1"
 license = { text = "MIT" }
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = ["torch>=2.0", "numpy"]
+authors = [{ name = "KernelPanicKitten" }]
+keywords = ["frame interpolation", "vfi", "rife", "slow motion", "fps",
+            "retiming", "video", "optical flow", "60fps", "interpolation"]
+classifiers = ["Topic :: Multimedia :: Video"]
 
 [project.optional-dependencies]
 ui = ["gradio>=4.0"]
-
-[project.scripts]
-gapfiller = "gapfiller.standalone:main"
-gapfiller-ui = "gapfiller.standalone:ui"
 
 [project.urls]
 Repository = "https://github.com/KernelPanicKitten/ComfyUI-GapFiller"
