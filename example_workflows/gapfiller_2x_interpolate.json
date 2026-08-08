@@ -1,0 +1,163 @@
+{
+  "last_node_id": 3,
+  "last_link_id": 2,
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "VHS_LoadVideo",
+      "pos": [
+        40,
+        120
+      ],
+      "size": [
+        300,
+        300
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "properties": {
+        "Node name for S&R": "VHS_LoadVideo"
+      },
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "frame_count",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "links": null
+        },
+        {
+          "name": "video_info",
+          "type": "VHS_VIDEOINFO",
+          "links": null
+        }
+      ],
+      "widgets_values": [
+        "input.mp4",
+        0,
+        0,
+        0,
+        0,
+        1,
+        "Wrap"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "GapFillerInterpolate",
+      "pos": [
+        400,
+        120
+      ],
+      "size": [
+        330,
+        290
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "properties": {
+        "Node name for S&R": "GapFillerInterpolate"
+      },
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2
+          ],
+          "slot_index": 0
+        }
+      ],
+      "widgets_values": [
+        2,
+        "gapfiller_v1.pt",
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        true,
+        0.0,
+        false
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VHS_VideoCombine",
+      "pos": [
+        790,
+        120
+      ],
+      "size": [
+        330,
+        330
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "properties": {
+        "Node name for S&R": "VHS_VideoCombine"
+      },
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 2
+        }
+      ],
+      "widgets_values": [
+        48,
+        0,
+        "GapFiller",
+        {
+          "format": "video/h264-mp4",
+          "crf": 16
+        },
+        false,
+        true
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      2,
+      0,
+      3,
+      0,
+      "IMAGE"
+    ]
+  ]
+}
