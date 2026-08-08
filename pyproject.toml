@@ -20,4 +20,4 @@ Repository = "https://github.com/KernelPanicKitten/ComfyUI-GapFiller"
 [tool.comfy]
 PublisherId = "kernelpanickitten"
 DisplayName = "GapFiller"
-Icon = ""
+Icon = "https://raw.githubusercontent.com/KernelPanicKitten/ComfyUI-GapFiller/master/icon.png"
